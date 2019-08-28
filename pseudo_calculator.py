@@ -31,10 +31,38 @@ def resolve_path(path):
     # examples provide the correct *syntax*, but you should
     # determine the actual values of func and args using the
     # path.
-    func = some_func
-    args = ['25', '32']
-
+    method = {
+        'positive': pos,
+        'negative': neg,
+    }
+    path = path.strip('/').split('/')
+    
+    entry = path[0]
+    args = path[1:]
+    num = "-".join(path[1:])
+    num = int(num)
+    
+    if (entry == 'positive' and num > 0):
+        selection = 'positive'
+    elif (entry == 'positive' and num <= 0):
+        selection = 'negative'
+    elif (entry == 'negative' and num < 0):
+        selection = 'positive'
+    elif (entry == 'negative' and num >= 0):
+        selection = 'negative'
+    
+    try:
+        func = method[selection]
+    except KeyError:
+        raise NameError
     return func, args
+
+def pos(num):
+    return 'True'
+
+def neg(num):
+    return 'False'
+
 
 def application(environ, start_response):
     headers = [('Content-type', 'text/html')]
